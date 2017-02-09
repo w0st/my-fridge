@@ -1,6 +1,6 @@
 # MyFridge
 
-React native app store informations about products in my fridge.
+The React native app store informations about products in my fridge.
 
 ## Main idea
 

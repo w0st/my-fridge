@@ -11,43 +11,40 @@ import {
   Text,
   View
 } from 'react-native';
+import { Router, Scene } from 'react-native-router-flux';
+import ListProduct from './src/components/ListProduct/ListProduct';
+import AddProduct from './src/components/AddProduct/AddProduct';
+import { firebaseApp } from './src/settings/Firebase';
 
 export default class MyFridge extends Component {
+  constructor(props) {
+    super(props);
+    this.login('wojtek@example.com', 'password');
+  }
+
+  async login(email, pass) {
+    try {
+        await firebaseApp.auth()
+            .signInWithEmailAndPassword(email, pass);
+
+        console.log("Logged In!");
+    } catch (error) {
+        console.log(error.toString())
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <Router>
+        <Scene key="root">
+          <Scene key="list" component={ListProduct} title="My Fridge" initial={true} />
+          <Scene key="add" component={AddProduct} title="Add Product" />
+        </Scene>
+      </Router>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+
 
 AppRegistry.registerComponent('MyFridge', () => MyFridge);
