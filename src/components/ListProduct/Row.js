@@ -16,16 +16,21 @@ const styles = StyleSheet.create({
   }
 });
 
+const expiryIn = (date) => {
+  days = moment(date).diff(moment().startOf('day'), 'days')
+  return days < 0 ? 'outdate' : days + ' days'
+}
+
 const Row = (props) => (
   <View style={styles.container}>
     <Text style={styles.text}>
       {`${props.name}`}
     </Text>
-    <Text>
-      {`${props.category}`}
+    <Text style={styles.text}>
+      {`${props.category ? props.category : ''}`}
     </Text>
-    <Text>
-      {`${moment(props.expiryDate).format("DD-MM-YYYY")}`}
+    <Text style={styles.text}>
+      {`${expiryIn(props.expiryDate)}`}
     </Text>
   </View>
 );

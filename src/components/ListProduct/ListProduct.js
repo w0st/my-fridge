@@ -3,6 +3,7 @@ import { View, Text, Button, ListView, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { styles } from './Styles.js';
 import Row from './Row.js';
+import Header from './Header.js';
 import { firebaseApp } from '../../settings/Firebase';
 
 export default class List extends Component {
@@ -35,13 +36,16 @@ export default class List extends Component {
       	<View style={styles.list}>
           <Text style={styles.listCaption}>List of products</Text>
           <ListView
-                    dataSource={this.state.dataSource}
-                    renderRow={(rowData) => <Row {...rowData} />} />
-        </View>
+            enableEmptySections={true}
+            dataSource={this.state.dataSource}
+            renderRow={(rowData) => <Row {...rowData} />} 
+            renderHeader={() => <Header />}
+            renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />} />
+  </View>
         <Button onPress={Actions.add}
-                style={styles.buttons}
-                title="Add item" 
-                accessibilityLabel="Add item to the fridge" />
+          style={styles.buttons}
+          title="Add item" 
+          accessibilityLabel="Add item to the fridge" />
       </View>
     )
   }

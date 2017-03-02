@@ -2,17 +2,19 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    paddingTop: 70,
+    marginTop: 50,
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'flex-start',
     backgroundColor: '#E3E8FF',
   },
-  form: {
-    flex: 5,
-    flexDirection: 'column',
+  buttonsBar: {
+    flexDirection: 'row',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  buttons: {
-    flex: 1,
-    color: "#4566FF"
+  button: {
+    color: "#4566FF",
   }
 });
