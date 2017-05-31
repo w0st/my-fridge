@@ -54,39 +54,35 @@ export default class AddProduct extends Component {
   }
 
   // TODO: Add photo too
-  addItem() {
-    this.uploadFile();
-    var value = this.refs.form.getValue();
+  async addItem() {
+    let uploadedFileUrl = await this.uploadFile();
+    let value = this.refs.form.getValue();
     if (value) { // if validation fails, value will be null
-      console.log(value); // value here is an instance of Product
-      var productKey = firebaseApp.database().ref().child('listOfProducts').push().key;
-      var updates = {};
-      updates['/listOfProducts/' + productKey] = value;
+      let productKey = value.name;
+      let updates = {};
+      updates['/listOfProducts/' + productKey] = { ...value, photoURL: uploadedFileUrl };
       firebaseApp.database().ref().update(updates);
       // go to main page
       Actions.pop();
     }
   }
 
-  uploadFile() {
-    console.log('uploadFile');
-    var PATH_TO_READ = '/storage/emulated/0/DCIM/IMG_20170216_105333.jpg';
+  async uploadFile() {
+    var PATH_TO_READ = this.state.photo;
+    var NAME_OF_THE_PICTURE = this.state.photo.split('/').slice(-1)[0];
 
     let rnfbURI = RNFetchBlob.wrap(PATH_TO_READ);
     console.log('rnfbURI = ', rnfbURI)
-    Blob
-      .build(rnfbURI, { type : 'image/png;'})
-      .then((blob) => {
-        console.log('blog = ', blob)
-       // upload image using Firebase SDK
-        firebaseApp.storage()
-          .ref()
-          .child('image.png')
-          .put(blob, { contentType : 'image/png' })
-          .then((snapshot) => {
-            blob.close()
-          })
-      })
+    let blob = await Blob.build(rnfbURI, { type : 'image/png;'})
+    console.log('blob = ', blob)
+   // upload image using Firebase SDK
+    let stored = await firebaseApp.storage()
+      .ref()
+      .child(NAME_OF_THE_PICTURE)
+      .put(blob, { contentType : 'image/png' });
+    blob.close();
+    uploadedFileUrl = stored.a.downloadURLs[0];
+    return uploadedFileUrl;
   }
 
   getCollection() {

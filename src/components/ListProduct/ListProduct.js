@@ -24,7 +24,6 @@ export default class List extends Component {
       var collection = [];
       snapshot.forEach( (childSnapshot) => {
         collection.push(childSnapshot.val());
-        console.log('collection = ', collection);
         that.setState({dataSource: that.state.dataSource.cloneWithRows(collection)});
       })
     });
@@ -38,13 +37,13 @@ export default class List extends Component {
           <ListView
             enableEmptySections={true}
             dataSource={this.state.dataSource}
-            renderRow={(rowData) => <Row {...rowData} />} 
+            renderRow={(rowData) => <Row {...rowData} />}
             renderHeader={() => <Header />}
             renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />} />
   </View>
         <Button onPress={Actions.add}
           style={styles.buttons}
-          title="Add item" 
+          title="Add item"
           accessibilityLabel="Add item to the fridge" />
       </View>
     )
